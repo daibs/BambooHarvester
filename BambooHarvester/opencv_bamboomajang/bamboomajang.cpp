@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
 	//waitKey(0);
 	if (argc > 1) {
 		img = cv::imread(argv[1], 1);
-		cv::cvtColor(img, img, CV_BGR2BGRA);
+		cv::cvtColor(img, img, cv::COLOR_BGR2BGRA);
 	}
 	cap.capture();
 	img = cap.getimg();
@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
 		//Mat dummy = Mat::zeros(Size(10,10),CV_8UC3);
 		//imshow("dummy",dummy);
 
-		code = cvWaitKey(0);
+		code = cv::waitKey(0);
 		cout << "code:" << code << endl;
 	}
 	cv::destroyAllWindows();

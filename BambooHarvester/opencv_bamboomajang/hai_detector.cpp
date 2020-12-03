@@ -3,7 +3,8 @@
 hai_detector::hai_detector() {
 	double threshold_init[11] = { 0.96,0.98,0.96,0.93,0.94,0.92,0.97,0.95,0.97,0.97,0.95 };
 	//	1    2    3    9    5    6	  7    8    4    4	  5
-	cv::String hainame = "bamboo_hai_";
+	cv::String img_path = "../img/";
+	cv::String hainame = img_path + "bamboo_hai_";
 	cv::String haimigi = "right_";
 	cv::String extension = ".png";
 	windowcoord = cv::Point(0, 0);
@@ -45,13 +46,13 @@ hai_detector::hai_detector() {
 }
 
 double hai_detector::gamedetect(cv::Mat tmpimg) {
-	cv::cvtColor(tmpimg, tmpimg, CV_BGRA2BGR);
+	cv::cvtColor(tmpimg, tmpimg, cv::COLOR_BGRA2BGR);
 	cout << tmpimg.cols << "," << tmpimg.rows << endl;
 	cv::Mat tmp;
 	//cv::imshow("tmpimg", tmpimg);
 	//cv::imshow("gameimg",gamewindow);
 	//cv::waitKey(0);
-	cv::matchTemplate(tmpimg, gamewindow, tmp, CV_TM_CCORR_NORMED);
+	cv::matchTemplate(tmpimg, gamewindow, tmp, cv::TM_CCORR_NORMED);
 	double maxval;
 	minMaxLoc(tmp, NULL, &maxval, NULL, &windowcoord);
 	cout << windowcoord.x << "," << windowcoord.y << endl;
@@ -66,7 +67,7 @@ double hai_detector::gamedetect(cv::Mat tmpimg) {
 
 
 bool hai_detector::detect(cv::Mat src) {
-	cv::cvtColor(src, src, CV_BGRA2BGR);
+	cv::cvtColor(src, src, cv::COLOR_BGRA2BGR);
 	//if(gamedetect(src) < 0.3){
 	//	return false;
 	//}
@@ -81,7 +82,7 @@ bool hai_detector::detect(cv::Mat src) {
 	//cout << img.channels() << "," << img.depth() << endl;
 	//cout << haidata[0].channels() << "," << haidata[0].depth() << endl;
 	for (int i = 0; i<11; i++) {
-		matchTemplate(tmpimg, haidata[i], tmp, CV_TM_CCORR_NORMED);
+		matchTemplate(tmpimg, haidata[i], tmp, cv::TM_CCORR_NORMED);
 		cv::Point pmax_pt = cv::Point(0, 0);
 		for (int j = 0; j<4; j++) {
 			cv::Point max_pt, min_pt;
@@ -92,7 +93,7 @@ bool hai_detector::detect(cv::Mat src) {
 			pieces[i] ++;
 			cout << i + 1 << "," << j + 1 << ":" << max_pt << ":" << maxval << endl;
 			rectangle(img, max_pt, cv::Point(max_pt.x + 44, max_pt.y + 51), cv::Scalar(255, i * 25, 0), 2);
-			rectangle(tmpimg, max_pt, cv::Point(max_pt.x + 44, max_pt.y + 51), cv::Scalar(0, 0, 0), CV_FILLED);
+			rectangle(tmpimg, max_pt, cv::Point(max_pt.x + 44, max_pt.y + 51), cv::Scalar(0, 0, 0), cv::FILLED);
 			for (int x = -30; x <= 30; x++) {
 				for (int y = -5; y <= 5; y++) {
 					if (max_pt.y + y < 0 || max_pt.y + y > img.rows || max_pt.x + x < 0 || max_pt.x + x > img.cols)
@@ -108,7 +109,7 @@ bool hai_detector::detect(cv::Mat src) {
 	pieces[3] += pieces[9];
 	pieces[4] += pieces[10];
 	for (int i = 0; i<8; i++) {
-		matchTemplate(tmpimg, hairight[i], tmp, CV_TM_CCORR_NORMED);
+		matchTemplate(tmpimg, hairight[i], tmp, cv::TM_CCORR_NORMED);
 		cv::Point pmax_pt = cv::Point(0, 0);
 
 		cv::Point max_pt, min_pt;
@@ -120,7 +121,7 @@ bool hai_detector::detect(cv::Mat src) {
 		hainum++;
 		cout << i + 1 << "," << "1" << ":" << max_pt << ":" << maxval << endl;
 		rectangle(img, max_pt, cv::Point(max_pt.x + 44, max_pt.y + 51), cv::Scalar(255, i * 25, 0), 2);
-		rectangle(tmpimg, max_pt, cv::Point(max_pt.x + 44, max_pt.y + 51), cv::Scalar(0, 0, 0), CV_FILLED);
+		rectangle(tmpimg, max_pt, cv::Point(max_pt.x + 44, max_pt.y + 51), cv::Scalar(0, 0, 0), cv::FILLED);
 
 		break;
 	}
