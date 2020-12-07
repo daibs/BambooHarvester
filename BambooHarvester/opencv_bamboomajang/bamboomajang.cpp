@@ -15,6 +15,9 @@ int main(int argc, char* argv[]) {
 		img = cv::imread(argv[1], 1);
 		cv::cvtColor(img, img, cv::COLOR_BGR2BGRA);
 	}
+	img = cv::Mat(300, 300, CV_8UC3, cv::Scalar(255, 255, 0));
+	imshow("img", img);
+	cv::waitKey(0);
 	cap.capture();
 	img = cap.getimg();
 	//cv::imshow("capture", img);
